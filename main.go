@@ -1,9 +1,10 @@
 package main
 
 import (
-	"jerome.com/gobaselearning/internal/ivsample"
-	//"jerome.com/gobaselearning/internal/gousualsample"
+	//"jerome.com/gobaselearning/internal/ivsample"
+	"jerome.com/gobaselearning/internal/gousualsample"
 )
+
 
 func main() {
 	//ivsample.DeferCallOrder()
@@ -20,7 +21,7 @@ func main() {
 	//ivsample.ChannelIterator()
 	//ivsample.SwitchJudgeType()
 	//ivsample.ConvertInterfaceToStringDemo()
-	ivsample.DeferInMethodWithReturnValue()
+	//ivsample.DeferInMethodWithReturnValue()
 	//ivsample.SliceNew()
 	//ivsample.Sliceappend2()
 	//ivsample.CompareStruct()
@@ -46,5 +47,17 @@ func main() {
 	//fmt.Println(gousualsample.IsBid("e17f36d12932672e60bb8605ee76b371"))
 	//fmt.Println(gousualsample.IsBid("11713611293267216011860511761371"))
 	//gousualsample.Xx()
+
+	//gousualsample.ReaderExample()
+	//gousualsample.StdOutWrite()
+	//gousualsample.ReaderAtSample()
+	//gousualsample.WriterAtSample()
+	//gousualsample.ReaderFromSample()
+
+	//gousualsample.StringSample1()
+	//gousualsample.StringSample2()
+	gousualsample.StringSample3()
+	//gousualsample.StringForRangeSample()
+	//gousualsample.StringByteRuneSample()
 
 }
