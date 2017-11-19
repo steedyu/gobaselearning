@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 	"os"
-	"gopkg.in/bufio.v1"
 	"io/ioutil"
+	"bufio"
 )
 
 func IoReaderExample() {

@@ -1,10 +1,8 @@
 package main
 
 import (
-	//"jerome.com/gobaselearning/internal/ivsample"
 	"jerome.com/gobaselearning/internal/gousualsample"
 )
-
 
 func main() {
 	//ivsample.DeferCallOrder()
@@ -56,8 +54,20 @@ func main() {
 
 	//gousualsample.StringSample1()
 	//gousualsample.StringSample2()
-	gousualsample.StringSample3()
+	//gousualsample.StringSample3()
 	//gousualsample.StringForRangeSample()
 	//gousualsample.StringByteRuneSample()
 
+
+	//apipe.Demo1(false)
+	//apipe.Demo1(true)
+
+	//npipe.InMemorySyncPipe()
+	//npipe.FileBasedPipe()
+
+	//socket.SocketDemo()
+
+	gousualsample.CheckChannelCloses()
 }
+
+
