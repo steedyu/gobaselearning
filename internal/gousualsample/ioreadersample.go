@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 	"os"
-	"io/ioutil"
 	"bufio"
 )
 
@@ -51,7 +50,7 @@ func ReaderExample() {
 			//file.Close()
 			fmt.Println("暂未实现！")
 		case "3":
-			data, err = read(strings.NewReader("from string"), 12)
+			data, err = read(strings.NewReader("from string"), 11)
 		case "4":
 			fmt.Println("暂未实现！")
 		case "b":
@@ -123,8 +122,4 @@ func ReaderFromSample() {
 	writer.Flush()
 }
 
-func ReaderFromSample2() {
-	ioutil.ReadFile("writeAt.txt")
-
-}
 

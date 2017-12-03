@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"fmt"
+	"bytes"
 )
 
 func write(writer io.Writer, data []byte) (num int, err error) {
@@ -27,3 +28,9 @@ func WriterAtSample() {
 	}
 	fmt.Println(n)
 }
+
+func WriteToSample() {
+	reader := bytes.NewReader([]byte("Go语言中文网"))
+	reader.WriteTo(os.Stdout)
+}
+
