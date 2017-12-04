@@ -1,7 +1,7 @@
 package main
 
 import (
-	"jerome.com/gobaselearning/internal/gousualsample"
+	"jerome.com/gobaselearning/internal/goc2p/chan1/oneway"
 )
 
 func main() {
@@ -66,8 +66,13 @@ func main() {
 	//npipe.FileBasedPipe()
 
 	//socket.SocketDemo()
+	oneway.PhandlerDemo()
 
-	gousualsample.CheckChannelCloses()
+
+	//gousualsample.CheckChannelCloses()
+	//gousualsample.ReciveMsgFromChan()
+	//gousualsample.ReciveMsgFromChanIsCompletelyCopy()
+	//gousualsample.CloseChanDemo()
 }
 
 
