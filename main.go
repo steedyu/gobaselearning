@@ -75,7 +75,8 @@ func main() {
 	//gousualsample.CloseChanDemo()
 
 	//gousualsample.AllCaseExpressionEvaluatedBeforeSelect()
-	gousualsample.SelectTimeOutSample()
+	//gousualsample.SelectTimeOutSample()
+	gousualsample.SelectTimeOutSample2()
 }
 
 

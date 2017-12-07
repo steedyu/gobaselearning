@@ -68,3 +68,39 @@ func SelectTimeOutSample() {
 		}
 	}
 }
+
+func SelectTimeOutSample2() {
+	ch11 := make(chan int,1000)
+
+	var e int
+	ok := true
+	//to := time.NewTimer(time.Millisecond)
+	var timer *time.Timer
+	for  {
+		//to.Reset(time.Millisecond) //这样做的确可以不重复创建timer 但是这个超时的时间，其实据不精确了
+		select {
+		case e,ok = <- ch11:
+			if !ok {
+				fmt.Println("End")
+				break
+			}else {
+				fmt.Printf("%d\n",e)
+			}
+		//case <-to.C:
+		case <- func() <-chan time.Time {  //这样做能够精确 因为在 执行到case的时候 才会去初始化或者重置
+			if timer == nil {
+				timer = time.NewTimer(time.Millisecond)
+			}else  {
+				timer.Reset(time.Millisecond)
+			}
+			return timer.C
+		}():
+			fmt.Println("Timeout.")
+			break
+		}
+		if !ok {
+			break
+		}
+	}
+}
+

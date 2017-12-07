@@ -88,8 +88,17 @@ func savePerson(dest <-chan Person) <-chan byte {
 }
 
 func fetchPerson(origs chan<- Person) {
+	/*
+	判断channel是否带有缓存
+	非缓冲通道只能同步地传递元素值
+	在收发两端都有并发需求的情况下，使用非缓冲通道作为元素值传输介质是不合适的
+	  */
 	origsCap := cap(origs)
 	buffered := origsCap > 0
+	/*
+	goTicket通道实际上我们为了限制该程序启用的Goroutine的数量而声明的一个缓冲通道
+	这是使用缓冲通道作为Goroutine票池的典型做法
+	 */
 	goTicketTotal := origsCap / 2
 	goTicket := initGoTicket(goTicketTotal)
 	go func() {
@@ -97,6 +106,11 @@ func fetchPerson(origs chan<- Person) {
 			p, ok := fetchPerson1()
 			if !ok {
 				for {
+					/*
+					保证安全的情况下，关闭origs
+					1 buffered判断，如果origs通道是非缓冲的，我们没必要做检查直接关闭
+					2 goTicket长度是否和其容量相等，相等，说明goTicket中令牌都已被收回，所有相关Goroutine都已经执行完毕，就可以关闭了
+					 */
 					if !buffered || len(goTicket) == goTicketTotal {
 						break
 					}
@@ -107,9 +121,15 @@ func fetchPerson(origs chan<- Person) {
 				break
 			}
 			if buffered {
+				/*
+				每当我们要启用一个Goroutine的时候，就从该通道中接受一个元素值，以表示可被启用的Goroutine减少一个
+				 */
 				<-goTicket
 				go func() {
 					origs <- p
+					/*
+					每当一个被启用Goroutine的运行即将结束的时候，我们就应该向该通道发送一个元素值，以表示可被启用的Goroutine增加一个
+					 */
 					goTicket <- 1
 				}()
 			} else {
