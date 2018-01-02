@@ -1,0 +1,5 @@
+package testsample
+
+func Pool() {
+
+}
