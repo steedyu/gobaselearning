@@ -1,6 +1,9 @@
 package main
 
 import (
+	//"fmt"
+	//"math"
+	"jerome.com/gobaselearning/internal/gousualsample/encryption"
 	"jerome.com/gobaselearning/internal/gousualsample"
 )
 
@@ -76,7 +79,57 @@ func main() {
 
 	//gousualsample.AllCaseExpressionEvaluatedBeforeSelect()
 	//gousualsample.SelectTimeOutSample()
-	gousualsample.SelectTimeOutSample2()
+	//gousualsample.SelectTimeOutSample2()
+
+	//ivsample.ForrangeAppend()
+	//gousualsample.StructZeroUsefulSample()
+
+	//gousualsample.TimeSample()
+
+	//gousualsample.Base64Sample()
+
+	gousualsample.EsAnalysisSample3()
+
+	//var byteArr []byte = make([]byte,0)
+	//
+	//byS1 := "115 115 58 49 49 50 55 48 57 52 51 52 48 50 52 48 48 55 52 58 52 54 54 55 50 50 57 56 58 115 116 111 99 107 115 111 114 116 58 49"
+	//bys1Arr := strings.Split(byS1, " ")
+	//for _, item := range bys1Arr {
+	//	n,_ := strconv.Atoi(item)
+	//	byteArr = append(byteArr, byte(n))
+	//}
+	//fmt.Println(string(byteArr))
+	//
+	//byS1 = "54 48 48 54 56 56 124 48 49 124 48 49"
+	//bys1Arr = strings.Split(byS1, " ")
+	//for _, item := range bys1Arr {
+	//	n,_ := strconv.Atoi(item)
+	//	byteArr = append(byteArr, byte(n))
+	//}
+	//fmt.Println(string(byteArr))
+
+	//str1 := "601313ST,601360ST,601361ST"
+	//strArr1 := strings.Split(str1, "601313ST")
+	//if strings.TrimSpace(strArr1[0]) == "" {
+	//	fmt.Println(strings.TrimLeft(strArr1[1],","))
+	//}
+	//
+	//str2 := "601360ST,601361ST,601313ST"
+	//strArr2 := strings.Split(str2, "601313ST")
+	//if strings.TrimSpace(strArr2[1]) == "" {
+	//	fmt.Println(strings.TrimRight(strArr2[0],","))
+	//}
+	//
+	//
+	//str3 := "601360ST,601361ST,601313ST,601362ST"
+	//strArr3 := strings.Split(str3, "601313ST")
+	//fmt.Println(strings.TrimLeft(strArr3[1],",") + "," + strings.TrimRight(strArr3[0],","))
+
+	//encryption.GenRsakeyDemo()
+	//encryption.RsaEnDecrypt()
+	//encryption.DesDemo()
+	encryption.AesEnDeCryptDemo()
 }
+
 
 
