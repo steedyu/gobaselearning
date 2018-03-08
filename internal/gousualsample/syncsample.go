@@ -21,7 +21,7 @@ func OnceDoDemo() {
 	}
 	for i := 0; i < 3; i++ {
 		fi := f(i + 1)
-		go once.Do(fi())
+		go once.Do(fi)
 	}
 	for j := 0; j < 3; j++ {
 		select {
