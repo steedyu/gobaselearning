@@ -3,7 +3,6 @@ package main
 import (
 	//"fmt"
 	//"math"
-	"jerome.com/gobaselearning/internal/gousualsample/encryption"
 	"jerome.com/gobaselearning/internal/gousualsample"
 )
 
@@ -88,7 +87,7 @@ func main() {
 
 	//gousualsample.Base64Sample()
 
-	gousualsample.EsAnalysisSample3()
+	//gousualsample.EsAnalysisSample3()
 
 	//var byteArr []byte = make([]byte,0)
 	//
@@ -128,7 +127,9 @@ func main() {
 	//encryption.GenRsakeyDemo()
 	//encryption.RsaEnDecrypt()
 	//encryption.DesDemo()
-	encryption.AesEnDeCryptDemo()
+	//encryption.AesEnDeCryptDemo()
+
+	gousualsample.GenRandStringDemo()
 }
 
 

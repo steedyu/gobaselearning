@@ -3,6 +3,10 @@ package gousualsample
 import (
 	"fmt"
 	"unicode/utf8"
+	"time"
+
+	"bytes"
+	"math/rand"
 )
 
 const sample = "\xbd\xb2\x3d\xbc\x20\xe2\x8c\x98"
@@ -122,4 +126,32 @@ func StringByteRuneSample() {
 		nextR, size := utf8.DecodeRune(s)
 		fmt.Printf("r == nextR:%v \n", r == nextR)
 	}
+}
+
+
+func GenRandStringDemo() {
+	fmt.Println(genRandString())
+}
+
+func genRandString() string {
+	var buff bytes.Buffer
+	var prev string
+	var curr string
+	for i := 0; buff.Len() < 3; i++ {
+		//string可以将数字直接转为数字对应Ascii的字符
+		curr = string(genRandAZAscii())
+		if curr == prev {
+			continue
+		}
+		prev = curr
+		buff.WriteString(curr)
+	}
+	return buff.String()
+}
+
+func genRandAZAscii() int {
+	min := 65 // A
+	max := 90 // Z
+	rand.Seed(time.Now().UnixNano())
+	return min + rand.Intn(max-min)
 }
