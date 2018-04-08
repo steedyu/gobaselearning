@@ -7,6 +7,7 @@ import (
 
 	"bytes"
 	"math/rand"
+	"strings"
 )
 
 const sample = "\xbd\xb2\x3d\xbc\x20\xe2\x8c\x98"
@@ -155,3 +156,50 @@ func genRandAZAscii() int {
 	rand.Seed(time.Now().UnixNano())
 	return min + rand.Intn(max-min)
 }
+
+func MultilineStrings() {
+
+	/*
+	``的功能类似于Net中的@""
+	 */
+	str := `This is a\a
+multiline
+string.`
+
+	str1 := "a\\ab"
+	fmt.Println(str)
+	fmt.Println(str1)
+}
+
+func EfficientConcatenationStrings() {
+
+	var b bytes.Buffer
+
+	for i := 0; i < 1000; i++ {
+		b.WriteString(genRandString())
+	}
+
+	fmt.Println(b.String())
+
+	//join来连接字符串时，需要字符提前已经生成
+	var strs []string
+	for i := 0; i < 1000; i++ {
+		strs = append(strs, genRandString())
+	}
+
+	fmt.Println(strings.Join(strs, ""))
+}
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+func GenRandomString(length int) string {
+
+	var source = rand.NewSource(time.Now().UnixNano())
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[source.Int63()%int64(len(charset))]
+	}
+	return string(b)
+
+}
+
+
