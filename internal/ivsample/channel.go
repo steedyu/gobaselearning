@@ -54,3 +54,44 @@ func ChannelIterator(){
 	v:=<-th.Iter()
 	fmt.Sprintf("%s%v","ch",v)
 }
+
+
+/*
+All operations on unbuffered channels block the execution until both sender and receiver are ready to communicate.
+That’s why unbuffered channels are also called synchronous.
+In case a channel has a buffer all read operations succeed without blocking if the buffer is not empty, and write operations
+- if the buffer is not full. These channels are called asynchronous.
+ */
+func ChannelSyncDeadLock() {
+	//fatal error: all goroutines are asleep - deadlock!
+	c := make(chan int)
+	c <- 42    // write to a channel
+	val := <-c // read from a channel
+	println(val)
+}
+
+
+/*
+Closing a channel has one more useful feature
+- reading operations on closed channels do not block and always return default value for a channel type
+*/
+func ChannelClosedUseful() {
+	done := make(chan bool)
+
+	go func() {
+		println("goroutine message")
+
+		// We are only interested in the fact of sending itself,
+		// but not in data being sent.
+		//done <- true
+
+
+		/* Here the done channel is only used to synchronize the execution but not for sending data.
+		There is a kind of pattern for such cases
+		 */
+		close(done)
+	}()
+
+	println("main function message")
+	<-done
+}
