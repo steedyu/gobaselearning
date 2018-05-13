@@ -5,11 +5,11 @@ import "fmt"
 func SliceDemo() {
 
 	//sliceCopy()
-	sliceCutandDelete1()
+	//sliceCutandDelete1()
 	//sliceCutAndDelete2()
 	//sliceInsert()
 	//slicePopandShift()
-	//slicePush()
+	slicePush()
 	//sliceFilteringWithoutAllocating()
 }
 
@@ -54,13 +54,19 @@ func sliceCopy() {
 }
 
 func sliceCutandDelete1() {
+
+	/*
+	a[n:m] 表示的是区间闭开区间[n:m)
+	 */
+
 	//cut
 	a := []int{1, 2, 3, 4, 5}
 	fmt.Println("before cut:", len(a), &a[0], &a[1], &a[2], &a[3], &a[4])
 	fmt.Println(append(a[:2], a[4:]...))
 	fmt.Println(a)
-	//a = append(a[:2], a[4:]...)
-	fmt.Println("after cut:", len(a), &a[0], &a[1], &a[2])
+	ar := append(a[:2], a[4:]...)
+	fmt.Println("after cut ar:", len(ar), &ar[0], &ar[1], &ar[2])
+	fmt.Println("after cut a:", len(a), &a[0], &a[1], &a[2], &a[3], &a[4])
 	fmt.Println(a)
 
 
@@ -157,9 +163,11 @@ func slicePopandShift() {
 func slicePush() {
 	a := []int{1, 2, 3, 4, 5}
 	a = append(a, 6)
+	fmt.Println("slicePush 1", a, &a[0])
 
 	//Push Front/Unshift
 	a = append([]int{0}, a...)
+	fmt.Println("slicePush 2", a, &a[0])
 }
 
 func sliceFilteringWithoutAllocating() {
@@ -180,13 +188,13 @@ func sliceFilteringWithoutAllocating() {
 func sliceReversing() {
 
 	a := []int{1, 2, 3, 4, 5}
-	for i := len(a)/2-1; i >= 0; i-- {
-		opp := len(a)-1-i
+	for i := len(a) / 2 - 1; i >= 0; i-- {
+		opp := len(a) - 1 - i
 		a[i], a[opp] = a[opp], a[i]
 	}
 
 	//The same thing, except with two indices:
-	for left, right := 0, len(a)-1; left < right; left, right = left+1, right-1 {
+	for left, right := 0, len(a) - 1; left < right; left, right = left + 1, right - 1 {
 		a[left], a[right] = a[right], a[left]
 	}
 
