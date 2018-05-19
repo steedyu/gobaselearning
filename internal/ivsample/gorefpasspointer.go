@@ -35,17 +35,17 @@ but that is not the same thing as two variables who share the same storage locat
  */
 func NoReferenceVariables() {
 	var a, b, c int
-	fmt.Println(&a, &b, &c) // 0x1040a124 0x1040a128 0x1040a12c
+	fmt.Println("&a:", &a, "&b:", &b, "&c:", &c) // 0x1040a124 0x1040a128 0x1040a12c
 
 	var a1 int
 	var b1, c1 *int = &a1, &a1
-	fmt.Println(b1, c1)
-	fmt.Println(&b1, &c1)
+	fmt.Println("b1:", b1, "c1:", c1)
+	fmt.Println("&b1:", &b1, "&c1:", &c1)
 
 	var a2 int = 0
 	var b2, c2 int = a2, a2
-	fmt.Println(b2, c2)
-	fmt.Println(&b2, &c2)
+	fmt.Println("b2:", b2, "c2:", c2)
+	fmt.Println("&b2:", &b2, "&c2:", &c2)
 }
 
 /*
@@ -60,7 +60,7 @@ func AreMapsandChannelsReferencesPass() {
 	 */
 	// int 及 *int 举例
 	var a int
-	fmt.Println(&a, a)
+	fmt.Println("&a:", &a, "a:", a)
 	fnInt(a)
 	fnIntpointer(&a)
 	fmt.Println(&a, a)
@@ -77,15 +77,19 @@ func AreMapsandChannelsReferencesPass() {
 }
 
 func fnIntpointer(a *int) {
-	fmt.Println("before fnIntpointer =", a)
+	//&a 参数 a *int 分配的指针地址  a 本身的值 是一个*int的指针值
+	fmt.Println("before fnIntpointer parameter a &a:", &a, "a:", a)
+	//对于 a *int %p表示的是 a 所承载的指针值
+	fmt.Println("a %p result:", fmt.Sprintf("%p", a))
 	var b int = 2
+	fmt.Println("&b:", b)
 	a = &b
-	fmt.Println("after fnIntpointer =", a, *a)
+	fmt.Println("after fnIntpointer parameter a &a:", &a, "a:", a, "*a:", *a)
 }
 
 func fnIntpointer1(a *int) {
 	*a = 2
-	fmt.Println("after fnIntpointer1 =", a, *a)
+	fmt.Println("after fnIntpointer1 parameter a &a:", &a, "a:", a, "*a:", *a)
 }
 
 func fnInt(a int) {
