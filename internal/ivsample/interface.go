@@ -190,10 +190,6 @@ func test2() error {
 func InterfaceNilIssue3() {
 	var e error = test2()
 
-	/*
-	error是一个接口类型，test方法中返回的指针p虽然数据是nil，
-	但是由于它被返回成包装的error类型，也即它是有类型的。所以它的底层结构应该是(*data, nil)，很明显它是非nil的
-	 */
 	d := (*struct {
 		itab uintptr
 		data uintptr

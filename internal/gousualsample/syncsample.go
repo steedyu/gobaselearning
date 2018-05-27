@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+//https://yq.aliyun.com/articles/18366
+//sync.Once类型及其方法实现了“只会执行一次”的语义。
 func OnceDoDemo() {
 	var num int
 	sign := make(chan bool)
@@ -20,6 +22,11 @@ func OnceDoDemo() {
 		}
 	}
 	for i := 0; i < 3; i++ {
+		/*
+		为了能够精确的表达出fi函数是在哪一次（或哪几次）调用once.Do方法的时候被执行的，
+		我们在这里使用了闭包。在每次迭代之初，我们赋给fi变量的函数值都是对变量f所代表的函数值进行闭包的一个结果值。
+		我们使用变量ii作为f函数中的自由变量，并在闭包的过程中把for代码块中的变量i的值加1后再与该自由变量绑定在一起。这样就生成了为当次迭代专门定制的函数fi。
+		 */
 		fi := f(i + 1)
 		go once.Do(fi)
 	}
@@ -31,7 +38,7 @@ func OnceDoDemo() {
 			fmt.Println("Timeout!")
 		}
 	}
-	fmt.Println("Num:%d. \n", num)
+	fmt.Printf("Num:%d. \n", num)
 }
 
 
