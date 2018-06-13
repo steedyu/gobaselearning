@@ -12,7 +12,7 @@ While Idiomatic Go requires a change in thinking, I am pleasantly surprised with
  */
 
 type Part struct {
-	Name        string
+	name        string
 	Description string
 	NeedsSpare  bool
 }
@@ -26,11 +26,11 @@ Notice that we don’t prefix getters with Get (eg. GetName). Getters aren’t s
 especially with strings. When the need arises, we can always change the Name field to use a custom type that satisfies the Stringer interface.
  */
 func (part Part) Name() string {
-	return part.Name
+	return part.name
 }
 
 func (part *Part) SetName(name string) {
-	part.Name = name
+	part.name = name
 }
 
 
