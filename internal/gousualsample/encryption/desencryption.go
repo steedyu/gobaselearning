@@ -35,26 +35,35 @@ func DesDemo() {
 }
 
 /*
-此处事例 初始向量直接使用key充当了（实际项目中，最好别这么做）。
+origData 原始数据
+key 密钥
 
-//密钥和向量必须为8位，否则加密解密都不成功。
+说明：
+此处事例 初始向量直接使用key充当了（实际项目中，最好别这么做）。
+密钥和向量必须为8字节(byte) 即64个Bit，否则加密解密都不成功。
  */
 func DesEncrypt(origData, key []byte) ([]byte, error) {
 
-	//这里使用的key
+	//1 创建并返回一个使用DES算法的cipher.Block接口
 	block, err := des.NewCipher(key)
 	if err != nil {
 		return nil, err
 	}
+	//2 对最后一个明文分组进行数据填充
 	origData = PKCS5Padding(origData, block.BlockSize())
 	// origData = ZeroPadding(origData, block.BlockSize())
 
-	/*
-	cipher.NewCBCEncrypter 会painc，需要进行相应处理
-	 */
 
-	//这里使用的是向量
+
+	//3 创建一个密码分组为链模式的，底层使用DES加密的BlockMode接口
+	/*
+	NewCBCEncrypter(b Block, iv []byte) BlockMode
+	b  模式
+	iv 初始向量　The length of iv must be the same as the Block's block size
+	否则会panic
+	 */
 	blockMode := cipher.NewCBCEncrypter(block, key)
+	//4 加密连续的数据块
 	crypted := make([]byte, len(origData))
 	// 根据CryptBlocks方法的说明，如下方式初始化crypted也可以
 	// crypted := origData
@@ -63,6 +72,41 @@ func DesEncrypt(origData, key []byte) ([]byte, error) {
 }
 
 
+//crypted 加密数据
+//key 密钥
+func DesDecrypt(crypted, key []byte) ([]byte, error) {
+
+	//1 创建并返回一个使用DES算法的cipher.Block接口
+	block, err := des.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	//2 创建一个密码分组为链模式的，底层使用DES解密的BlockMode接口
+	blockMode := cipher.NewCBCDecrypter(block, key)
+
+	//3 解密连续的数据块
+	origData := make([]byte, len(crypted))
+	// origData := crypted
+	blockMode.CryptBlocks(origData, crypted)
+
+	//4 去掉填充
+	origData = PKCS5UnPadding(origData)
+	// origData = ZeroUnPadding(origData)
+
+	return origData, nil
+}
+
+/*
+填充最后一个分组函数
+ciphertext 原始数据
+blockSize 每个分组的数据长度
+
+填充思路：
+1 最后一个分组不够8字节，需要填充满8字节
+2 如果最后一个分组是密钥长度的整数倍，在末尾添加一分组，分组中每个字节的值和当前分组的长度相等
+
+ */
 func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
 
 	padding := blockSize - len(ciphertext)%blockSize
@@ -71,33 +115,26 @@ func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
 	return append(ciphertext, padtext...)
 }
 
-
-
-func DesDecrypt(crypted, key []byte) ([]byte, error) {
-
-	block, err := des.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-
-	blockMode := cipher.NewCBCDecrypter(block, key)
-	origData := make([]byte, len(crypted))
-	// origData := crypted
-	blockMode.CryptBlocks(origData, crypted)
-	origData = PKCS5UnPadding(origData)
-	// origData = ZeroUnPadding(origData)
-
-	return origData, nil
-
-}
-
-
-
 func PKCS5UnPadding(origData []byte) []byte {
 	length := len(origData)
 	// 去掉最后一个字节 unpadding 次
 	unpadding := int(origData[length-1])
 	return origData[:(length - unpadding)]
 }
+
+
+func ZeroPadding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{0}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func ZeroUnPadding(origData []byte) []byte {
+	return bytes.TrimRightFunc(origData, func(r rune) bool{
+		return r == rune(0)
+	})
+}
+
+
 
 
