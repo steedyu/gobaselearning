@@ -84,6 +84,15 @@ type IntegerConstant struct {
 	value uint64
 }
 
+/*
+在以上的方案中，你不能嵌入与嵌入类型相同的方法名。
+例如结构体Bar匿名嵌入结构体Foo后，就不能拥有名称为Foo的方法，同样也不能实现type Fooer interface { Foo() }接口类型。
+.\golangoopsample.go:87: type IntegerConstant has both field and method named Token
+func (i *IntegerConstant) Token()  {
+
+}
+*/
+
 
 /*
 继承自其他结构体的struct类型可以直接访问父类结构体的字段和方法
