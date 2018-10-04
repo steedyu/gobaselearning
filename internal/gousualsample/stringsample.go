@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"math/rand"
 	"strings"
+	"strconv"
 )
 
 const sample = "\xbd\xb2\x3d\xbc\x20\xe2\x8c\x98"
@@ -200,6 +201,86 @@ func GenRandomString(length int) string {
 	}
 	return string(b)
 
+}
+
+func StringUsualFunctionDemo() {
+
+	//"hellogo"中是否包含"hello", 包含返回true， 不包含返回false
+	fmt.Println(strings.Contains("hellogo", "hello"))
+	fmt.Println(strings.Contains("hellogo", "abc"))
+
+	//Joins 组合
+	s := []string{"abc", "hello", "mike", "go"}
+	buf := strings.Join(s, "x")
+	fmt.Println("buf = ", buf)
+
+	//Index, 查找子串的位置
+	fmt.Println(strings.Index("abcdhello", "hello"))
+	fmt.Println(strings.Index("abcdhello", "go")) //不包含子串返回-1
+
+	buf = strings.Repeat("go", 3)
+	fmt.Println("buf = ", buf) //"gogogo"
+
+	//Split 以指定的分隔符拆分
+	buf = "hello@abc@go@mike"
+	s2 := strings.Split(buf, "@")
+	fmt.Println("s2 = ", s2)
+
+	//Trim去掉两头的字符
+	buf = strings.Trim("      are u ok?          ", " ") //去掉2头空格
+	fmt.Printf("buf = #%s#\n", buf)
+
+	//去掉空格，把元素放入切片中
+	s3 := strings.Fields("      are u ok?          ")
+	//fmt.Println("s3 = ", s3)
+	for i, data := range s3 {
+		fmt.Println(i, ", ", data)
+	}
+
+}
+
+/*
+fmt.Errorf("%s", "this is normal err")   等同于 errors.New(fmt.Sprintf("%s", "this is normal err"))
+ */
+
+/*
+严格的讲，应该是在把 int，float等类型转换为字符串时，不要用 fmt.Sprintf，更好的做法是用标准库函数。fmt.Sprintf 的用途是格式化字符串，接受的类型是
+ interface{}，内部使用了反射。所以，与相应的标准库函数相比，fmt.Sprintf 需要更大的开销。大多数类型转换的函数都可以在 strconv 包里找到。
+ */
+func StringConvertDemo() {
+
+	//转换为字符串后追加到字节数组
+	slice := make([]byte, 0, 1024)
+	slice = strconv.AppendBool(slice, true)
+	//第二个数为要追加的数，第3个为指定10进制方式追加
+	slice = strconv.AppendInt(slice, 1234, 10)
+	slice = strconv.AppendQuote(slice, "abcgohello")
+
+	fmt.Println("slice = ", string(slice)) //转换string后再打印
+
+	//其它类型转换为字符串
+	var str string
+	str = strconv.FormatBool(false)
+	//'f' 指打印格式，以小数方式， -1指小数点位数(紧缩模式)， 64以float64处理
+	str = strconv.FormatFloat(3.14, 'f', -1, 64)
+
+	//整型转字符串，常用
+	str = strconv.Itoa(6666)
+	fmt.Println("str = ", str)
+
+	//字符串转其它类型
+	var flag bool
+	var err error
+	flag, err = strconv.ParseBool("true")
+	if err == nil {
+		fmt.Println("flag = ", flag)
+	} else {
+		fmt.Println("err = ", err)
+	}
+
+	//把字符串转换为整型
+	a, _ := strconv.Atoi("567")
+	fmt.Println("a = ", a)
 }
 
 
