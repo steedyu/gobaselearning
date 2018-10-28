@@ -53,34 +53,54 @@ func ForrangePointer() {
 }
 
 func ForrangeAppend() {
-	/*
-	在Go的for…range循环中，range 一个slice的时候，其实range 也是一个指向	slice内容的引用
-	第一个循环体  append对x的容量(cap)进行了改变，所以构造了一个新的切片，然后x指向了一个新的切片
-	第二个循环体 append对x的容量(cap)为进行改变，所以并没有改变引用关系
-	****GoLang里对slice一定要谨慎使用append操作。
-	cap未变化时，slice是对数组的引用，并且append会修改被引用数组的值。
-	append操作导致cap变化后，会复制被引用的数组，然后切断引用关系。
-	 */
+	fmt.Println("---------------------exsample 1---------------------------")
+
 	x := []int{1, 2, 3}
-	fmt.Println(&x[0])
+	fmt.Printf("original x addr :%p\r\n", x)
+	/*
+	分析下下面的过程，
+	对x进行了复制，这里可以理解复制了一个 3个元素底层数组，长度是3的切片（窗口），
+	所以它最后的循环是3次，虽然过程中不断地对切片x进行了append，但是range表达式只会在for语句开始执行时被求值一次，并且被迭代的对象是range表达式结果值的副本而不是原值
+	虽然这里x是切片，是引用类型，但是append 并没有改变for range迭代副本切片中的元素
+	 */
 	for i := range x {
 		x = append(x, i)
-		fmt.Println(x, &x[0])
+		fmt.Printf("in forrange append x addr: %p\r\n", x)
 	}
-	fmt.Println(x)
+	fmt.Println("after append x:", x)
+	fmt.Println("---------------------exsample 1---------------------------")
 
+	/*
+	分析下下面的过程，
+	对x进行了复制，这里可以理解复制了一个 6个元素底层数组，长度是6的切片（窗口），
+	所以它最后的循环是6次
+	第一种情况
+	在第0次的时候,对x切片进行append 去除中间元素，由于没有超过cap的大小，所以修改的底层数组并没有重新分配空间=>和forrange复制的那个切片指向同一个
+	=>所以在forrange 遍历的结果里，值是发生改变的
+
+	第二种情况 在第0次的时候,对x切片进行append， 由于超过cap的大小，对底层数组重新分配，然后对新的底层数组进行修改=>并没有影响forrange复制那个切片指向的底层数组
+	=>所以在forrange 遍历的结果里，值是没有发生改变的
+	 */
+	fmt.Println("---------------------exsample 2---------------------------")
 	for i, e := range x {
-		fmt.Println("range i , e", i, e)
+		fmt.Println("range i , e :", i, e)
 		if i == 0 {
-			fmt.Println(&x[0])
-			//x = []int{1, 2, 3, 4}
-			x = append(x[:3], x[4:]...)
-			fmt.Println(&x[0])
+			//第一种情况 没有引起cap变动
+			//fmt.Printf("for range i:%v times, x addr :%p, x's length: %d, x's cap: %d\r\n", i, x, len(x), cap(x))
+			//x = append(x[:3], x[4:]...)
+			//fmt.Printf("for range i:%v times, x addr after append modify :%p\r\n", i, x)
+
+			//第二种情况 引起cap变动， 并且同时修改了第二个索引的元素值
+			fmt.Printf("for range i:%v times, x addr :%p, x's length: %d, x's cap: %d\r\n", i, x, len(x), cap(x))
+			x = append(x, 7)
+			x[i + 1] = 10 + x[i + 1]
+			fmt.Printf("for range i:%v times, x addr after append modify :%p\r\n", i, x)
+
 		}
-		fmt.Println(x)
-		fmt.Println(&x[0])
-		fmt.Println(len(x))
+
 	}
+	fmt.Printf("x : %v, x addr: %p, x's length: %d, x's cap: %d\r\n", x, x, len(x), cap(x))
+	fmt.Println("---------------------exsample 2---------------------------")
 }
 
 /*
@@ -144,4 +164,40 @@ func ForrangeStructArray() {
 	for i := range users {
 		users[i].notify()
 	}
+}
+
+/*
+range表达式只会在for语句开始执行时被求值一次，无论后边会有多少次迭代；
+range表达式的求值结果会被复制，也就是说，被迭代的对象是range表达式结果值的副本而不是原值。
+ */
+func ForrangeDemo() {
+	//这个是数组类型  值类型
+	numbers2 := [...]int{1, 2, 3, 4, 5, 6}
+	maxIndex2 := len(numbers2) - 1
+	for i, e := range numbers2 {
+		fmt.Println(i, e)
+		if i == maxIndex2 {
+			numbers2[0] += e
+		} else {
+			numbers2[i + 1] += e
+		}
+	}
+	fmt.Println(numbers2)
+
+}
+
+func ForrangeDemo1() {
+	//这个是切片类型 引用
+	numbers2 := []int{1, 2, 3, 4, 5, 6}
+	maxIndex2 := len(numbers2) - 1
+	for i, e := range numbers2 {
+		fmt.Println(i, e)
+		if i == maxIndex2 {
+			numbers2[0] += e
+		} else {
+			numbers2[i + 1] += e
+		}
+	}
+	fmt.Println(numbers2)
+
 }

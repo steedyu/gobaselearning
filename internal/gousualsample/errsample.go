@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"runtime"
 	"strconv"
-	"net"
 )
 
 func echo(request string) (response string, err error) {
@@ -217,5 +216,5 @@ func ErrorDemo3() {
 		fmt.Println("ERR2")
 	}
 
-	net.OpError{}
+
 }

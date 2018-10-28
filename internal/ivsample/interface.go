@@ -71,6 +71,7 @@ type HeType interface {
 
 type youknow struct {
 }
+
 func (t youknow) SayHi(str string) {
 	fmt.Println("hi " + str)
 }
@@ -78,6 +79,7 @@ func (t youknow) SayHi(str string) {
 type dknow struct {
 	youknow
 }
+
 func (t *dknow) SayBye(str string) {
 	fmt.Println("bye bye " + str + ".see you tomorrow.")
 }
@@ -148,7 +150,9 @@ func InterfaceNilIssue1() {
 
 type data struct{}
 
-func (this *data) Error() string { return "" }
+func (this *data) Error() string {
+	return ""
+}
 
 func test() error {
 	var p *data = nil
@@ -203,7 +207,75 @@ func InterfaceNilIssue3() {
 	}
 }
 
+type Pet interface {
+	Name() string
+	Category() string
+}
 
+type Dog struct {
+	name string // 名字。
+}
 
+func (dog *Dog) SetName(name string) {
+	dog.name = name
+}
 
+func (dog Dog) Name() string {
+	return dog.name
+}
+
+func (dog Dog) Category() string {
+	return "dog"
+}
+
+func InterfaceSetValueDemo() {
+	dog := Dog{"little pig"}
+	var pet Pet = dog
+	dog.SetName("monster")
+
+	fmt.Printf("pet :%+v \r\n", pet)
+	fmt.Printf("dog :%+v \r\n", dog)
+
+	dog1 := Dog{"little pig"}
+	dog2 := dog1
+	dog1.name = "monster"
+	fmt.Printf("dog1 :%+v \r\n", dog1)
+	fmt.Printf("dog2 :%+v \r\n", dog2)
+}
+
+func InterfaceNilDemo() {
+	// 示例1。
+	var dog1 *Dog
+	fmt.Println("The first dog is nil.")
+	dog2 := dog1
+	fmt.Println("The second dog is nil.")
+	var pet Pet = dog2
+	if pet == nil {
+		fmt.Println("The pet is nil.")
+	} else {
+		fmt.Println("The pet is not nil.")
+	}
+	fmt.Printf("The type of pet is %T.\n", pet)
+	fmt.Printf("The type of pet is %s.\n", reflect.TypeOf(pet).String())
+	fmt.Printf("The type of second dog is %T.\n", dog2)
+	fmt.Println()
+
+	/*
+	请记住，除非我们只声明而不初始化，或者显式地赋给它nil，否则接口变量的值就不会为nil。
+	 */
+
+	// 示例2。
+	wrap := func(dog *Dog) Pet {
+		if dog == nil {
+			return nil
+		}
+		return dog
+	}
+	pet = wrap(dog2)
+	if pet == nil {
+		fmt.Println("The pet is nil.")
+	} else {
+		fmt.Println("The pet is not nil.")
+	}
+}
 
