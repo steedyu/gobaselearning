@@ -35,3 +35,5 @@ func StructZeroUsefulSample() {
 	a.Test2()
 	a.Test()        //这行不会报错，仍然会执行进去
 }
+
+
