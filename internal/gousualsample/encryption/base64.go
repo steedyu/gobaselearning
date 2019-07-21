@@ -48,16 +48,16 @@ func Base64Sample() {
 
 func GetOriCodeFromBase64Sample() {
 
-	//fmt.Println(mustDecode(base64.StdEncoding, "NjQ0NkVGNEUtMUQwQy00NTRBLUJEQzctOEU2MzQxNDI0NTQ3"))
+	fmt.Println(mustDecode(base64.StdEncoding, "Y29tLmVhc3Rtb25leS5jb20uaXBob25l"))
 	fmt.Println(mustDecode(base64.StdEncoding, "NjQ0NkVGNEUtMUQwQy00NTRBLUJEQzctOEU2MzQxNDI0NTQ3"))
 	fmt.Println(mustDecode(base64.StdEncoding, "YzgzMTEwY2E1YmQwM2I5MjM5ZGJlNmRhMWMyZTE5ZjN8fDU4MTM4ODMzMDUwODg2OA=="))
-	fmt.Println(mustDecode(base64.StdEncoding, "Y29tLmVhc3Rtb25leS5jb20uaXBob25l"))
+	fmt.Println(mustDecode(base64.StdEncoding, "MjIyMjEtNDU0NjY3ODg="))
 
 }
 
 func OriCodeToBase64Sample() {
-
-	testEncoding(base64.StdEncoding, "6446EF4E-1D0C-454A-BDC7-8E6341424547")   // 打印：R2/or63oqIDnvJbnqIs=
-	testEncoding(base64.StdEncoding, "c83110ca5bd03b9239dbe6da1c2e19f3||581388330508868")
-	testEncoding(base64.StdEncoding, "com.eastmoney.com.iphone")    // 打印：R2/or63oqIDnvJbnqIs=
+	testEncoding(base64.StdEncoding, "2233-45466788")
+	testEncoding(base64.StdEncoding, "6446EF4E-1D0C-454A-BDC7-8E6341424547")   // NjQ0NkVGNEUtMUQwQy00NTRBLUJEQzctOEU2MzQxNDI0NTQ3
+	testEncoding(base64.StdEncoding, "c83110ca5bd03b9239dbe6da1c2e19f3||581388330508868") //YzgzMTEwY2E1YmQwM2I5MjM5ZGJlNmRhMWMyZTE5ZjN8fDU4MTM4ODMzMDUwODg2OA==
+	testEncoding(base64.StdEncoding, "com.eastmoney.com.iphone")    // Y29tLmVhc3Rtb25leS5jb20uaXBob25l
 }

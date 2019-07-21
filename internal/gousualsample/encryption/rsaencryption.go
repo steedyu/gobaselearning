@@ -22,36 +22,22 @@ func GenRsakeyDemo() {
 	fmt.Println("密钥文件生成成功！")
 }
 
+/*
+生成RSA密钥
+ */
 
-//生成RSA密钥
 func GenRsaKey(bits int) error {
 
 	// 生成私钥文件
-	//1 rsa中的GenerateKey方法生成私钥
 	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
 	if err != nil {
 		return err
 	}
-
-
-	//2 通过x509标准将得到的ras私钥序列化为ASN.1的DER编码字符串（ASN.1是一种序列化方式，抽象反标记）
 	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
-
-	//3 将私钥字符串设置到pem格式快中
-	// A Block represents a PEM encoded structure.
-	//
-	// The encoded form is:
-	//    -----BEGIN Type-----
-	//    Headers
-	//    base64-encoded Bytes
-	//    -----END Type-----
-	// where Headers is a possibly empty sequence of Key: Value lines.
 	block := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: derStream,
 	}
-
-	//4 通过pem将设置好的数据进行编码，并写入磁盘文件中
 	privFile, err := os.Create("private.pem")
 	if err != nil {
 		return err
@@ -64,23 +50,15 @@ func GenRsaKey(bits int) error {
 	}
 
 	// 生成公钥文件
-	//1 从得到的私钥对象中将公钥信息取出
 	publicKey := &privateKey.PublicKey
-
-	//2 通过x509标准将得到的rsa公钥序列化为字符串
-	//虽然x509.MarshalPKIXPublicKey的参数是一个接口类型，其实对数据的类型是有要求的，和私钥是一样的
 	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
 		return err
 	}
-
-	//3 将公钥字符串设置到pem格式快中
 	block = &pem.Block{
-		Type:  "RSA PUBLIC KEY",
+		Type:  "PUBLIC KEY",
 		Bytes: derPkix,
 	}
-
-	//4 通过pem将设置好的数据进行编码，并写入磁盘文件中
 	pubFile, err := os.Create("public.pem")
 	if err != nil {
 		return err
@@ -98,7 +76,7 @@ func GenRsaKey(bits int) error {
 RSA加密解密
  */
 func RsaEnDecryptDemo() {
-	data, err := RsaPublicEncrypt([]byte("polaris@studygolang.com"))
+	data, err := RsaEncrypt([]byte("polaris@studygolang.com"))
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +84,7 @@ func RsaEnDecryptDemo() {
 	//fmt.Println("rsa encrypt :" + string(data))
 	fmt.Println("rsa encrypt base64:" + base64.StdEncoding.EncodeToString(data))
 
-	origData, err := RsaPrivateDecrypt(data)
+	origData, err := RsaDecrypt(data)
 	if err != nil {
 		panic(err)
 	}
@@ -114,37 +92,29 @@ func RsaEnDecryptDemo() {
 }
 
 // 加密
-func RsaPublicEncrypt(origData []byte) ([]byte, error) {
-	// 2 得到的字符串解码
+func RsaEncrypt(origData []byte) ([]byte, error) {
 	block, _ := pem.Decode(publicKey)
 	if block == nil {
 		return nil, errors.New("public key error")
 	}
-
-	//3 使用x509将编码之后的公钥解析出来
 	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
 		return nil, err
 	}
 	pub := pubInterface.(*rsa.PublicKey)
-
-	//4 使用得到的公钥通过rsa进行数据加密
 	return rsa.EncryptPKCS1v15(rand.Reader, pub, origData)
 }
 
 // 解密
-func RsaPrivateDecrypt(ciphertext []byte) ([]byte, error) {
-	//2 得到的字符串解码
+func RsaDecrypt(ciphertext []byte) ([]byte, error) {
 	block, _ := pem.Decode(privateKey)
 	if block == nil {
 		return nil, errors.New("private key error!")
 	}
-	//3 使用x509将编码之后的私钥解析出来
 	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
 		return nil, err
 	}
-	//4 使用得到的私钥通过rsa进行数据解密
 	return rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)
 }
 
