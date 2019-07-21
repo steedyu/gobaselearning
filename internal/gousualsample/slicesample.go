@@ -5,11 +5,11 @@ import "fmt"
 func SliceDemo() {
 
 	//sliceCopy()
-	//sliceCutandDelete1()
+	sliceCutandDelete1()
 	//sliceCutAndDelete2()
 	//sliceInsert()
 	//slicePopandShift()
-	slicePush()
+	//slicePush()
 	//sliceFilteringWithoutAllocating()
 }
 
