@@ -200,3 +200,15 @@ func sliceReversing() {
 
 }
 
+func slicenilappend() {
+	var numslice []int
+
+	fmt.Println(numslice == nil, len(numslice), cap(numslice))
+	numslice = append(numslice, 1)
+	fmt.Println(numslice, len(numslice), cap(numslice))
+	numslice = append(numslice, 2)
+	fmt.Println(numslice, len(numslice), cap(numslice))
+	numslice = append(numslice, 3)
+	fmt.Println(numslice, len(numslice), cap(numslice))
+}
+
